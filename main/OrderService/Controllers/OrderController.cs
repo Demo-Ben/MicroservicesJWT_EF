@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderService.Data;
 using OrderService.Models;
 using System.Net.Http.Json;
 
@@ -9,15 +10,22 @@ namespace OrderService.Controllers;
 public class OrderController : ControllerBase
 {
     private readonly HttpClient _http;
+    private readonly OrderDbContext _db;
 
-    public OrderController(IHttpClientFactory httpClientFactory)
+    public OrderController(IHttpClientFactory httpClientFactory, OrderDbContext db)
     {
         _http = httpClientFactory.CreateClient();
+        _db = db;
     }
 
     [HttpPost]
     public async Task<IActionResult> CreateOrder(Order order)
     {
+        _db.Orders.Add(order);
+        await _db.SaveChangesAsync();
+
+
+
         // 1. Call PaymentService
         var paymentResponse = await _http.PostAsJsonAsync(
             "http://localhost:5002/api/payment",
