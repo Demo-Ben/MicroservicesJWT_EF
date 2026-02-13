@@ -24,8 +24,6 @@ public class OrderController : ControllerBase
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
 
-
-
         // 1. Call PaymentService
         var paymentResponse = await _http.PostAsJsonAsync(
             "http://localhost:5002/api/payment",

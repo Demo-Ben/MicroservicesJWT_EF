@@ -29,7 +29,8 @@ public class InventoryController : ControllerBase
             _db.Inventory.Add(item); 
         }
 
-        item.QuantityAvailable -= update.Quantity; _db.SaveChanges();
+        item.QuantityAvailable -= update.Quantity; 
+        _db.SaveChanges();
 
         // Simulate inventory update
         return Ok(new { Status = "Inventory Updated" });

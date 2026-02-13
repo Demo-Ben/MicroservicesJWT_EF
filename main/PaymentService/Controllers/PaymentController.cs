@@ -23,7 +23,8 @@ public class PaymentController : ControllerBase
             Amount = request.Amount, 
             Status = "Success" 
         }; 
-        _db.Payments.Add(payment); _db.SaveChanges();
+        _db.Payments.Add(payment); 
+        _db.SaveChanges();
 
         // Simulate payment success
         return Ok(new { Status = "Payment Successful" });
