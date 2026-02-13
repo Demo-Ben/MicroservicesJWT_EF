@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using InventoryService.Models;
+﻿using InventoryService.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace InventoryService.Data;
 
@@ -9,3 +10,7 @@ public class InventoryDbContext : DbContext
 
     public DbSet<InventoryItem> Inventory { get; set; }
 }
+
+//cd InventoryService
+//Add-Migration InitialCreate
+//Update-Database
