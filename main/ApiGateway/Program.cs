@@ -61,7 +61,7 @@ app.MapControllers();
 
 //If you put UseOcelot() before MapControllers(), your AuthController will NEVER run.
 // Ocelot LAST → handles microservice routing
-await app.UseOcelot();
+//await app.UseOcelot();
 
 app.Run();
 
