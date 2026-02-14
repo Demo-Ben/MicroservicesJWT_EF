@@ -1,20 +1,21 @@
-using System.Text;
+﻿using ApiGateway.Controllers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Load Ocelot config
 builder.Configuration
     .AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
 
+// JWT Authentication
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -34,6 +35,11 @@ builder.Services
     });
 
 builder.Services.AddAuthorization();
+
+// Add MVC controllers (AuthController lives here)
+builder.Services.AddControllers();
+
+// Add Ocelot
 builder.Services.AddOcelot();
 
 
@@ -45,14 +51,26 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 
+app.UseAuthentication();
+app.UseAuthorization();
 //await app.UseOcelot();
 
+// MVC FIRST → AuthController works
 app.MapControllers();
+
+//If you put UseOcelot() before MapControllers(), your AuthController will NEVER run.
+// Ocelot LAST → handles microservice routing
+await app.UseOcelot();
+
 app.Run();
 
+//404	Ocelot swallowed the route	AuthController not in Ocelot
+//502	Ocelot forwarded request to itself	Remove self‑routing
+//AuthController not working	Ocelot ran before MVC	Run MVC first
 
+
+// Version with JwtAuth but no Swagger or MVC controllers (for testing Ocelot routing only)
 
 //builder.Services.AddControllers();
 
@@ -75,16 +93,3 @@ app.Run();
 //app.MapControllers();
 
 //app.Run();
-
-
-
-//using Ocelot.DependencyInjection;
-//using Ocelot.Middleware;
-
-//var builder = WebApplication.CreateBuilder(args);
-
-//builder.Configuration.AddJsonFile("ocelot.json"); 
-//builder.Services.AddOcelot();
-
-//// Add services to the container.
-///
