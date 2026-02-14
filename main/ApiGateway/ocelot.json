@@ -1,5 +1,6 @@
 {
   "Routes": [
+    // OPTION 1 — Add a bypass route in Ocelot (recommended)
     //{
     //  "UpstreamPathTemplate": "/api/auth/token",
     //  "UpstreamHttpMethod": [ "POST" ],
