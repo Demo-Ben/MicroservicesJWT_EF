@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
 using OrderService.Models;
 using System.Net.Http.Json;
+
 
 namespace OrderService.Controllers;
 
@@ -18,6 +21,34 @@ public class OrderController : ControllerBase
         _db = db;
     }
 
+    // -------------------------------
+    // GET: api/order
+    // -------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var orders = await _db.Orders.ToListAsync();
+        return Ok(orders);
+    }
+
+    // -------------------------------
+    // GET: api/order/{id}
+    // -------------------------------
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var order = await _db.Orders.FindAsync(id);
+
+        if (order == null)
+            return NotFound($"Order with ID {id} not found");
+
+        return Ok(order);
+    }
+
+
+    // -------------------------------
+    // POST: api/order
+    // -------------------------------
     [HttpPost]
     public async Task<IActionResult> CreateOrder(Order order)
     {

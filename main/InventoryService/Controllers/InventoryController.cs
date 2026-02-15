@@ -1,6 +1,7 @@
 ﻿using InventoryService.Data;
 using InventoryService.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace InventoryService.Controllers;
 
@@ -14,6 +15,34 @@ public class InventoryController : ControllerBase
         _db = db; 
     }
 
+    // ---------------------------------------
+    // GET: api/inventory
+    // ---------------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var items = await _db.Inventory.ToListAsync();
+        return Ok(items);
+    }
+
+    // ---------------------------------------
+    // GET: api/inventory/{id}
+    // ---------------------------------------
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var item = await _db.Inventory.FindAsync(id);
+
+        if (item == null)
+            return NotFound($"Inventory item with ID {id} not found");
+
+        return Ok(item);
+    }
+
+
+    // ---------------------------------------
+    // POST: api/inventory/update
+    // ---------------------------------------
     [HttpPost("update")]
     public IActionResult UpdateInventory(InventoryUpdate update)
     {

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
 using PaymentService.Models;
 
@@ -12,6 +14,30 @@ public class PaymentController : ControllerBase
     public PaymentController(PaymentDbContext db) 
     { 
         _db = db; 
+    }
+
+    // ---------------------------------------
+    // GET: api/payment
+    // ---------------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var payments = await _db.Payments.ToListAsync();
+        return Ok(payments);
+    }
+
+    // ---------------------------------------
+    // GET: api/payment/{id}
+    // ---------------------------------------
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var payment = await _db.Payments.FindAsync(id);
+
+        if (payment == null)
+            return NotFound($"Payment with ID {id} not found");
+
+        return Ok(payment);
     }
 
     [HttpPost]
