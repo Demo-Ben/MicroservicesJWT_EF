@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
+using OrderService.DTOs;
 using OrderService.Models;
 using System.Net.Http.Json;
 
@@ -14,42 +16,43 @@ public class OrderController : ControllerBase
 {
     private readonly HttpClient _http;
     private readonly OrderDbContext _db;
+	private readonly IMapper _mapper;
 
-    public OrderController(IHttpClientFactory httpClientFactory, OrderDbContext db)
-    {
-        _http = httpClientFactory.CreateClient();
-        _db = db;
-    }
+	public OrderController(IHttpClientFactory httpClientFactory, OrderDbContext db, IMapper mapper)
+	{
+		_http = httpClientFactory.CreateClient();
+		_db = db;
+		_mapper = mapper;
+	}
 
-    // -------------------------------
-    // GET: api/order
-    // -------------------------------
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var orders = await _db.Orders.ToListAsync();
-        return Ok(orders);
-    }
+	// -------------------------------
+	// GET: api/order
+	// -------------------------------
+	[HttpGet]
+	public async Task<IActionResult> GetAll()
+	{
+		var orders = await _db.Orders.ToListAsync();
+		return Ok(_mapper.Map<List<OrderDto>>(orders));
+	}
 
-    // -------------------------------
-    // GET: api/order/{id}
-    // -------------------------------
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var order = await _db.Orders.FindAsync(id);
+	// -------------------------------
+	// GET: api/order/{id}
+	// -------------------------------
+	[HttpGet("{id}")]
+	public async Task<IActionResult> GetById(int id)
+	{
+		var order = await _db.Orders.FindAsync(id);
+		if (order == null)
+			return NotFound();
 
-        if (order == null)
-            return NotFound($"Order with ID {id} not found");
-
-        return Ok(order);
-    }
+		return Ok(_mapper.Map<OrderDto>(order));
+	}
 
 
-    // -------------------------------
-    // POST: api/order
-    // -------------------------------
-    [HttpPost]
+	// -------------------------------
+	// POST: api/order
+	// -------------------------------
+	[HttpPost]
     public async Task<IActionResult> CreateOrder(Order order)
     {
         _db.Orders.Add(order);
