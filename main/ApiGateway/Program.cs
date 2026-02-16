@@ -57,11 +57,6 @@ await app.UseOcelot();
 
 // MVC FIRST → AuthController works
 app.MapControllers();
-
-//If you put UseOcelot() before MapControllers(), your AuthController will NEVER run.
-// Ocelot LAST → handles microservice routing
-//await app.UseOcelot();
-
 app.Run();
 
 //404	Ocelot swallowed the route	AuthController not in Ocelot
