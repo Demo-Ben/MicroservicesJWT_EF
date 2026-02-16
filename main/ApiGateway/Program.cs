@@ -62,28 +62,3 @@ app.Run();
 //404	Ocelot swallowed the route	AuthController not in Ocelot
 //502	Ocelot forwarded request to itself	Remove self‑routing
 //AuthController not working	Ocelot ran before MVC	Run MVC first
-
-
-// Version with JwtAuth but no Swagger or MVC controllers (for testing Ocelot routing only)
-
-//builder.Services.AddControllers();
-
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-
-//var app = builder.Build();
-
-//// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-//app.UseAuthorization();
-
-//await app.UseOcelot();
-//app.MapControllers();
-
-//app.Run();
