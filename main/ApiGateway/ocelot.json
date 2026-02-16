@@ -1,18 +1,18 @@
 {
   "Routes": [
     // OPTION 1 — Add a bypass route in Ocelot (recommended)
-    //{
-    //  "UpstreamPathTemplate": "/api/auth/token",
-    //  "UpstreamHttpMethod": [ "POST" ],
-    //  "DownstreamPathTemplate": "/api/auth/token",
-    //  "DownstreamScheme": "http",
-    //  "DownstreamHostAndPorts": [
-    //    {
-    //      "Host": "localhost",
-    //      "Port": 5000
-    //    }
-    //  ]
-    //},
+    {
+      "DownstreamPathTemplate": "/api/auth/token",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5000
+        }
+      ],
+      "UpstreamPathTemplate": "/api/auth/token",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
     {
       "DownstreamPathTemplate": "/api/order",
       "DownstreamScheme": "http",
