@@ -44,8 +44,10 @@ public class AuthController : ControllerBase
 	[HttpPost("token")]
 	public async Task<IActionResult> GetToken(LoginRequest request)
 	{
+		// get user based on users object from db
 		var user = await _db.Users.FirstOrDefaultAsync(x => x.Username == request.Username);
 
+		// check user object's password match request password
 		if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
 			return Unauthorized("Invalid credentials");
 
@@ -66,6 +68,9 @@ public class AuthController : ControllerBase
 			expires: DateTime.UtcNow.AddMinutes(double.Parse(jwt["ExpiresMinutes"]!)),
 			signingCredentials: creds);
 
-		return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+        var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+        return Ok(new { token = tokenString });
+
+        //return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
 	}
 }
