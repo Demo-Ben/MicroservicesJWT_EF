@@ -10,8 +10,6 @@ builder.Services.AddDbContext<OrderDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddHttpClient();
-// Add services to the container.
-builder.Services.AddControllers();
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -31,6 +29,8 @@ builder.Services
         };
     });
 
+// Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddAuthorization();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -38,6 +38,10 @@ builder.Services.AddSwaggerGen();
 
 // This scans the assembly where "Program" lives for any Mapping Profiles
 builder.Services.AddAutoMapper(typeof(Program));
+
+
+
+
 
 var app = builder.Build();
 
