@@ -53,7 +53,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-//await app.UseOcelot();
+await app.UseOcelot();
 
 // MVC FIRST → AuthController works
 app.MapControllers();
