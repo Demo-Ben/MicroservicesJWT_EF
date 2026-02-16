@@ -14,7 +14,7 @@
     //  "UpstreamHttpMethod": [ "POST" ]
     //},
     {
-      "DownstreamPathTemplate": "/api/auth/register",
+      "DownstreamPathTemplate": "/api/auth/register/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -22,11 +22,11 @@
           "Port": 5004
         }
       ],
-      "UpstreamPathTemplate": "/auth/register",
+      "UpstreamPathTemplate": "/auth/register/{everything}",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/order",
+      "DownstreamPathTemplate": "/api/order/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -34,7 +34,7 @@
           "Port": 5001
         }
       ],
-      "UpstreamPathTemplate": "/order",
+      "UpstreamPathTemplate": "/order/{everything}",
       "UpstreamHttpMethod": [ "POST" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer",
@@ -42,7 +42,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/payment",
+      "DownstreamPathTemplate": "/api/payment/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -50,11 +50,11 @@
           "Port": 5002
         }
       ],
-      "UpstreamPathTemplate": "/payment",
+      "UpstreamPathTemplate": "/payment/{everything}",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/inventory/update",
+      "DownstreamPathTemplate": "/api/inventory/update/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -62,11 +62,11 @@
           "Port": 5003
         }
       ],
-      "UpstreamPathTemplate": "/inventory/update",
+      "UpstreamPathTemplate": "/inventory/update/{everything}",
       "UpstreamHttpMethod": [ "POST" ]
     },
     {
-      "DownstreamPathTemplate": "/api/auth/token",
+      "DownstreamPathTemplate": "/api/auth/token/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -74,7 +74,7 @@
           "Port": 5004
         }
       ],
-      "UpstreamPathTemplate": "/auth/token",
+      "UpstreamPathTemplate": "/auth/token/{everything}",
       "UpstreamHttpMethod": [ "POST" ]
     }
   ],
