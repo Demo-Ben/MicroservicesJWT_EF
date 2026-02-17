@@ -5,10 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
 using OrderService.DTOs;
 using OrderService.Models;
-using System.Net.Http.Json;
 //using PaymentService.Models;
 //using InventoryService.Models;
 using SharedKernel.Models;
+using System.Net.Http.Json;
+using static System.Net.WebRequestMethods;
 
 namespace OrderService.Controllers;
 
@@ -16,14 +17,17 @@ namespace OrderService.Controllers;
 [Route("api/[controller]")]
 public class OrderController : ControllerBase
 {
-    private readonly HttpClient _http;
+    //private readonly HttpClient _http;
+    private readonly IHttpClientFactory _httpClientFactory;
+
     private readonly OrderDbContext _db;
 	private readonly IMapper _mapper;
 
-	public OrderController(IHttpClientFactory httpClientFactory, OrderDbContext db, IMapper mapper)
+    public OrderController(IHttpClientFactory httpClientFactory, OrderDbContext db, IMapper mapper)
 	{
-		_http = httpClientFactory.CreateClient();
-		_db = db;
+        //_http = httpClientFactory.CreateClient();
+        _httpClientFactory = httpClientFactory;
+        _db = db;
 		_mapper = mapper;
 	}
 
@@ -63,9 +67,12 @@ public class OrderController : ControllerBase
 
         // 1. Call PaymentService
         //https://localhost:5002/api/Payment
-        var paymentRequest = new Payment { OrderId = order.Id, Amount = order.Amount };
+        var paymentRequest = new Payment { OrderId = order.Id, Amount = order.Amount, Status="" };
+
+        var _http = _httpClientFactory.CreateClient("PaymentService");
+
         //var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment", new { order.Id, order.Amount });
-        var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment",  paymentRequest);
+        var paymentResponse = await _http.PostAsJsonAsync("api/payment", paymentRequest);
 
         if (!paymentResponse.IsSuccessStatusCode)
             return BadRequest("Payment failed");
@@ -74,8 +81,10 @@ public class OrderController : ControllerBase
 		// 2. Call InventoryService
 		//https://localhost:5003/api/Inventory/update
 		var inventoryUpdate = new InventoryUpdate { ProductId= order.ProductId, Quantity =order.Quantity };
+
+        var _http2 = _httpClientFactory.CreateClient("InventoryService");
         //var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update",new { order.ProductId, order.Quantity });
-        var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update", inventoryUpdate);
+        var inventoryResponse = await _http2.PostAsJsonAsync("api/inventory/update", inventoryUpdate);
 
         if (!inventoryResponse.IsSuccessStatusCode)
             return BadRequest("Inventory update failed");
