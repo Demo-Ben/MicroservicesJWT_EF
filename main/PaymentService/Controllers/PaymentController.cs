@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
-using PaymentService.Models;
 using SharedKernel.DTOs;
 using SharedKernel.Models;
 

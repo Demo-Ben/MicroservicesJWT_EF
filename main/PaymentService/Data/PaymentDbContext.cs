@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-using PaymentService.Models;
 using SharedKernel.Models;
 
 namespace PaymentService.Data;
