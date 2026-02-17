@@ -30,30 +30,6 @@ public class OrderController : ControllerBase
 	}
 
 	// -------------------------------
-	// GET: api/order
-	// -------------------------------
-	[HttpGet]
-	public async Task<IActionResult> GetAll()
-	{
-		var orders = await _db.Orders.ToListAsync();
-		return Ok(_mapper.Map<List<OrderDto>>(orders));
-	}
-
-	// -------------------------------
-	// GET: api/order/{id}
-	// -------------------------------
-	[HttpGet("{id}")]
-	public async Task<IActionResult> GetById(int id)
-	{
-		var order = await _db.Orders.FindAsync(id);
-		if (order == null)
-			return NotFound();
-
-		return Ok(_mapper.Map<OrderDto>(order));
-	}
-
-
-	// -------------------------------
 	// POST: api/order
 	// -------------------------------
 	[HttpPost]
@@ -134,4 +110,28 @@ public class OrderController : ControllerBase
             InventoryStatus = inventoryResult.Status
         });
     }
+
+    // -------------------------------
+    // GET: api/order
+    // -------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var orders = await _db.Orders.ToListAsync();
+        return Ok(_mapper.Map<List<OrderDto>>(orders));
+    }
+
+    // -------------------------------
+    // GET: api/order/{id}
+    // -------------------------------
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var order = await _db.Orders.FindAsync(id);
+        if (order == null)
+            return NotFound();
+
+        return Ok(_mapper.Map<OrderDto>(order));
+    }
+
 }

@@ -17,31 +17,6 @@ public class PaymentController : ControllerBase
         _db = db; 
     }
 
-    public object Payments { get; private set; }
-
-    // ---------------------------------------
-    // GET: api/payment
-    // ---------------------------------------
-    [HttpGet]
-    public async Task<IActionResult> GetAll()
-    {
-        var payments = await _db.Payments.ToListAsync();
-        return Ok(payments);
-    }
-
-    // ---------------------------------------
-    // GET: api/payment/{id}
-    // ---------------------------------------
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id)
-    {
-        var payment = await _db.Payments.FindAsync(id);
-
-        if (payment == null)
-            return NotFound($"Payment with ID {id} not found");
-
-        return Ok(payment);
-    }
 
     [HttpPost]
     public IActionResult ProcessPayment(Payment request)
@@ -109,5 +84,32 @@ public class PaymentController : ControllerBase
             Status = "Refunded",
             Message = "Payment refunded successfully"
         });
+    }
+
+
+    public object Payments { get; private set; }
+
+    // ---------------------------------------
+    // GET: api/payment
+    // ---------------------------------------
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
+    {
+        var payments = await _db.Payments.ToListAsync();
+        return Ok(payments);
+    }
+
+    // ---------------------------------------
+    // GET: api/payment/{id}
+    // ---------------------------------------
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
+    {
+        var payment = await _db.Payments.FindAsync(id);
+
+        if (payment == null)
+            return NotFound($"Payment with ID {id} not found");
+
+        return Ok(payment);
     }
 }

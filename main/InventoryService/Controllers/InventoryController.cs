@@ -16,6 +16,31 @@ public class InventoryController : ControllerBase
     }
 
     // ---------------------------------------
+    // POST: api/inventory/update
+    // ---------------------------------------
+    [HttpPost("update")]
+    public IActionResult UpdateInventory(InventoryUpdate update)
+    {
+        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId);
+
+        if (item == null) 
+        { 
+            item = new InventoryItem
+            { 
+                ProductId = update.ProductId, 
+                QuantityAvailable = 0 
+            }; 
+            _db.Inventory.Add(item); 
+        }
+
+        item.QuantityAvailable -= update.Quantity; 
+        _db.SaveChanges();
+
+        // Simulate inventory update
+        return Ok(new { Status = "Reserved" });
+    }
+
+    // ---------------------------------------
     // GET: api/inventory
     // ---------------------------------------
     [HttpGet]
@@ -40,28 +65,4 @@ public class InventoryController : ControllerBase
     }
 
 
-    // ---------------------------------------
-    // POST: api/inventory/update
-    // ---------------------------------------
-    [HttpPost("update")]
-    public IActionResult UpdateInventory(InventoryUpdate update)
-    {
-        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId);
-
-        if (item == null) 
-        { 
-            item = new InventoryItem
-            { 
-                ProductId = update.ProductId, 
-                QuantityAvailable = 0 
-            }; 
-            _db.Inventory.Add(item); 
-        }
-
-        item.QuantityAvailable -= update.Quantity; 
-        _db.SaveChanges();
-
-        // Simulate inventory update
-        return Ok(new { Status = "Reserved" });
-    }
 }
