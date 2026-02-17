@@ -1,5 +1,4 @@
 ﻿using InventoryService.Data;
-//using InventoryService.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.Models;

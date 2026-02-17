@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 namespace SharedKernel.DTOs;
-
 public class PaymentDto
 {
 

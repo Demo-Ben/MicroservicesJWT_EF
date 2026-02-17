@@ -1,5 +1,4 @@
 ﻿namespace SharedKernel.DTOs;
-
 public class InventoryItemDto
 {
     public int Id { get; set; }

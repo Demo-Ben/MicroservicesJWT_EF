@@ -1,11 +1,4 @@
-﻿using SharedKernel.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace SharedKernel.Models
 {
