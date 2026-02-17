@@ -111,10 +111,25 @@ public class OrderController : ControllerBase
         });
     }
 
-    // -------------------------------
-    // GET: api/order
-    // -------------------------------
-    [HttpGet]
+
+
+//    // 1. Refund payment
+//    await _paymentClient.PostAsJsonAsync("api/payment/refund", new 
+//{
+//    transactionId = paymentResult.TransactionId
+//});
+
+//// 2. Release inventory (if any was reserved earlier)
+//await _inventoryClient.PostAsJsonAsync("api/inventory/release", new 
+//{
+//    productId = order.ProductId,
+//    quantity = order.Quantity
+//});
+
+// -------------------------------
+// GET: api/order
+// -------------------------------
+[HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var orders = await _db.Orders.ToListAsync();

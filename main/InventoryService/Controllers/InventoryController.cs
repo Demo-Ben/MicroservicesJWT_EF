@@ -1,6 +1,7 @@
 ﻿using InventoryService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedKernel.DTOs;
 using SharedKernel.Models;
 
 namespace InventoryService.Controllers;
@@ -58,6 +59,36 @@ public class InventoryController : ControllerBase
             Message = "Inventory reserved successfully"
         });
     }
+
+
+
+    //[HttpPost("release")]
+    //public IActionResult ReleaseInventory([FromBody] ReleaseInventoryRequest request)
+    //{
+    //    var item = _db.Inventory.FirstOrDefault(x => x.ProductId == request.ProductId);
+
+    //    // If item doesn't exist, nothing to release
+    //    if (item == null)
+    //    {
+    //        return Ok(new
+    //        {
+    //            Status = "Ignored",
+    //            Message = "No inventory record found. Nothing to release."
+    //        });
+    //    }
+
+    //    // Add stock back
+    //    item.QuantityAvailable += request.Quantity;
+    //    _db.SaveChanges();
+
+    //    return Ok(new
+    //    {
+    //        Status = "Released",
+    //        AvailableQuantity = item.QuantityAvailable,
+    //        Message = "Inventory released successfully"
+    //    });
+    //}
+
 
     // ---------------------------------------
     // GET: api/inventory
