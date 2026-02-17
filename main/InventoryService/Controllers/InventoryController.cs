@@ -23,21 +23,40 @@ public class InventoryController : ControllerBase
     {
         var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId);
 
-        if (item == null) 
-        { 
-            item = new InventoryItem
-            { 
-                ProductId = update.ProductId, 
-                QuantityAvailable = 0 
-            }; 
-            _db.Inventory.Add(item); 
+        // If item doesn't exist, treat as zero stock
+        if (item == null)
+        {
+            return Ok(new
+            {
+                Status = "OutOfStock",
+                AvailableQuantity = 0,
+                Message = "Product not found in inventory"
+            });
         }
 
+        // Check if enough stock exists
+        if (item.QuantityAvailable < update.Quantity)
+        {
+            return Ok(new
+            {
+                Status = "OutOfStock",
+                AvailableQuantity = item.QuantityAvailable,
+                Message = "Not enough inventory available"
+            });
+        }
+
+        // Deduct stock
         item.QuantityAvailable -= update.Quantity; 
         _db.SaveChanges();
 
         // Simulate inventory update
-        return Ok(new { Status = "Reserved" });
+        //return Ok(new { Status = "Reserved" });
+        return Ok(new
+        {
+            Status = "Reserved",
+            AvailableQuantity = item.QuantityAvailable,
+            Message = "Inventory reserved successfully"
+        });
     }
 
     // ---------------------------------------
