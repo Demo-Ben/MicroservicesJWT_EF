@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using InventoryService.DTOs;
-using InventoryService.Models;
+using SharedKernel.DTOs;
+using SharedKernel.Models;
 
 public class InventoryProfile : Profile
 {

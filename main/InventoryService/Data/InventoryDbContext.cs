@@ -1,4 +1,4 @@
-﻿using InventoryService.Models;
+﻿using SharedKernel.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 

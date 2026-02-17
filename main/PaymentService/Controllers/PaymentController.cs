@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PaymentService.Data;
 using PaymentService.Models;
+using SharedKernel.Models;
 
 namespace PaymentService.Controllers;
 

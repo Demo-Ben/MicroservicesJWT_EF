@@ -1,7 +1,7 @@
-﻿namespace InventoryService.Models;
+﻿//namespace InventoryService.Models;
 
-public class InventoryUpdate
-{
-    public string ProductId { get; set; }
-    public int Quantity { get; set; }
-}
+//public class InventoryUpdate
+//{
+//    public string ProductId { get; set; }
+//    public int Quantity { get; set; }
+//}

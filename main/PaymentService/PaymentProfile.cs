@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using PaymentService.DTOs;
-using PaymentService.Models;
+using SharedKernel.DTOs;
+using SharedKernel.Models;
 
 public class PaymentProfile : Profile
 {

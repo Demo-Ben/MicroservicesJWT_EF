@@ -6,8 +6,9 @@ using OrderService.Data;
 using OrderService.DTOs;
 using OrderService.Models;
 using System.Net.Http.Json;
-using PaymentService.Models;
-using InventoryService.Models;
+//using PaymentService.Models;
+//using InventoryService.Models;
+using SharedKernel.Models;
 
 namespace OrderService.Controllers;
 
