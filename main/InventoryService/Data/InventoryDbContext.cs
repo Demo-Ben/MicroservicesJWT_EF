@@ -11,6 +11,6 @@ public class InventoryDbContext : DbContext
     public DbSet<InventoryItem> Inventory { get; set; }
 }
 
-//cd InventoryService
-//Add-Migration InitialCreate
-//Update-Database
+
+// Add-Migration InitialCreate
+// Update-Database

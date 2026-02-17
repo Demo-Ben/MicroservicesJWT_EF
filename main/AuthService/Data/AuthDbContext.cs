@@ -10,7 +10,6 @@ public class AuthDbContext : DbContext
 	public DbSet<User> Users { get; set; }
 }
 
-// In In Package Manager Console:
-//cd OrderService
-//Add-Migration InitialCreate
-//Update-Database
+
+// Add-Migration InitialCreate
+// Update-Database

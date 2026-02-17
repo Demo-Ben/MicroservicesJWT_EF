@@ -11,7 +11,5 @@ public class PaymentDbContext : DbContext
     public DbSet<Payment> Payments { get; set; }
 }
 
-
-//cd PaymentService
-//Add-Migration InitialCreate
-//Update-Database
+// Add-Migration InitialCreate
+// Update-Database
