@@ -1,4 +1,6 @@
-﻿namespace OrderService.Models;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace OrderService.Models;
 
 //public class Order
 //{
@@ -10,6 +12,7 @@
 
 public class Order
 {
+    [Key]
     public int Id { get; set; }
     public string ProductId { get; set; }
     public int Quantity { get; set; }
