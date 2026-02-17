@@ -10,7 +10,7 @@ using OrderService.Models;
 using SharedKernel.Models;
 using System.Net.Http.Json;
 using static System.Net.WebRequestMethods;
-using SharedKernel.DTOs
+using SharedKernel.DTOs;
 
 namespace OrderService.Controllers;
 
