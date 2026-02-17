@@ -17,12 +17,7 @@ public class Order
     public string ProductId { get; set; }
     public int Quantity { get; set; }
     public decimal Amount { get; set; }
+    public required string Status { get; set; } = "Pending";
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-
-    //ProductId = dto.ProductId,
-    //Quantity = dto.Quantity,
-    //Amount = dto.Amount,
-    //Status = "Pending",
-    //CreatedAt = DateTime.UtcNow
 }
