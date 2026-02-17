@@ -18,4 +18,11 @@ public class Order
     public int Quantity { get; set; }
     public decimal Amount { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+
+    //ProductId = dto.ProductId,
+    //Quantity = dto.Quantity,
+    //Amount = dto.Amount,
+    //Status = "Pending",
+    //CreatedAt = DateTime.UtcNow
 }

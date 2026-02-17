@@ -68,7 +68,12 @@ public class OrderController : ControllerBase
 
         // 1. Call PaymentService
         //https://localhost:5002/api/Payment
-        var paymentRequest = new Payment { OrderId = order.Id, Amount = order.Amount, Status="" };
+        var paymentRequest = new Payment 
+        {
+            OrderId = order.Id, 
+            Amount = order.Amount, 
+            Status=""
+        };
 
         var _http = _httpClientFactory.CreateClient("PaymentService");
 
@@ -79,11 +84,22 @@ public class OrderController : ControllerBase
             return BadRequest("Payment failed");
 
         var paymentResult = await paymentResponse.Content.ReadFromJsonAsync<PaymentResultDto>();
+        
+        //if (paymentResult.Status != "Success")
+        //{
+        //    order.Status = "PaymentFailed";
+        //    await _db.SaveChangesAsync();
+        //    return BadRequest("Payment failed");
+        //}
 
 
         // 2. Call InventoryService
         //https://localhost:5003/api/Inventory/update
-        var inventoryUpdate = new InventoryUpdate { ProductId= order.ProductId, Quantity =order.Quantity };
+        var inventoryUpdate = new InventoryUpdate 
+        {
+            ProductId= order.ProductId, 
+            Quantity =order.Quantity 
+        };
 
         var _http2 = _httpClientFactory.CreateClient("InventoryService");
         //var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update",new { order.ProductId, order.Quantity });
@@ -93,6 +109,23 @@ public class OrderController : ControllerBase
             return BadRequest("Inventory reservation failed");
 
         var inventoryResult = await inventoryResponse.Content.ReadFromJsonAsync<InventoryResultDto>();
+
+        //if (inventoryResult.Status != "Reserved")
+        //{
+        //    // COMPENSATING ACTION
+        //    await _paymentClient.PostAsJsonAsync("api/payment/refund", new
+        //    {
+        //        transactionId = paymentResult.TransactionId
+        //    });
+
+        //    order.Status = "InventoryFailed";
+        //    await _db.SaveChangesAsync();
+        //    return BadRequest("Inventory reservation failed");
+        //}
+
+        //order.Status = "Completed"; 
+        //await _db.SaveChangesAsync();
+
 
         //return Ok("Order processed successfully");
         // 3. Return combined result
