@@ -63,7 +63,7 @@ public class OrderController : ControllerBase
 
         // 1. Call PaymentService
         //https://localhost:5002/api/Payment
-        var paymentRequest = new Payment { OrderId = order.Id, Amount = order.Quantity };
+        var paymentRequest = new Payment { OrderId = order.Id, Amount = order.Amount };
         //var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment", new { order.Id, order.Amount });
         var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment",  paymentRequest);
 
