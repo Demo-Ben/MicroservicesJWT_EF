@@ -58,20 +58,25 @@ public class OrderController : ControllerBase
         _db.Orders.Add(order);
         await _db.SaveChangesAsync();
 
-        // 1. Call PaymentService
-        var paymentResponse = await _http.PostAsJsonAsync(
-            "http://localhost:5002/api/payment",
-            new { order.Id, order.Amount });
+		// 1. Call PaymentService
+		//https://localhost:5002/api/Payment
+		var paymentResponse = await _http.PostAsJsonAsync(
+							"http://localhost:5002/api/payment",
+							new { order.Id, order.Amount });
 
         if (!paymentResponse.IsSuccessStatusCode)
             return BadRequest("Payment failed");
 
-        // 2. Call InventoryService
-        var inventoryResponse = await _http.PostAsJsonAsync(
-            "http://localhost:5003/api/inventory/update",
-            new { order.ProductId, order.Quantity });
 
-        if (!inventoryResponse.IsSuccessStatusCode)
+		// 2. Call InventoryService
+		//https://localhost:5003/api/Inventory/update
+		var inventoryResponse = await _http.PostAsJsonAsync(
+							"http://localhost:5003/api/inventory/update",
+							new { order.ProductId, order.Quantity });
+
+	
+
+		if (!inventoryResponse.IsSuccessStatusCode)
             return BadRequest("Inventory update failed");
 
         return Ok("Order processed successfully");
