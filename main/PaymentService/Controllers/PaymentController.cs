@@ -75,7 +75,6 @@ public class PaymentController : ControllerBase
         // 4. Perform refund logic (simulate)
         payment.Status = "Refunded";
         payment.RefundedAt = DateTime.UtcNow;
-
         await _db.SaveChangesAsync();
 
         // 5. Return result

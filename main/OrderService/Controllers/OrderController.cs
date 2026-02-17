@@ -62,9 +62,9 @@ public class OrderController : ControllerBase
         {
             order.Status = "PaymentFailed";
             await _db.SaveChangesAsync();
-
             return BadRequest("Payment failed");
         }
+
 
 
         // 2. Call InventoryService
@@ -81,7 +81,6 @@ public class OrderController : ControllerBase
 
         if (!inventoryResponse.IsSuccessStatusCode)
             return BadRequest("Inventory reservation failed");
-
 
         var inventoryResult = await inventoryResponse.Content.ReadFromJsonAsync<InventoryResultDto>();
         if (inventoryResult.Status != "Reserved")
@@ -101,7 +100,6 @@ public class OrderController : ControllerBase
         order.Status = "Completed";
         await _db.SaveChangesAsync();
 
-        //return Ok("Order processed successfully");
         // 3. Return combined result
         return Ok(new
         {

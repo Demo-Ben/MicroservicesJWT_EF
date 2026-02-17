@@ -38,10 +38,10 @@ public class InventoryDbContext : DbContext
 
 
 
-//USE[InventoryServiceDb]
+
+//USE [InventoryServiceDb]
 //GO
 
-///****** Object:  Table [dbo].[Inventory]    Script Date: 18/02/2026 9:45:14 AM ******/
 //SET ANSI_NULLS ON
 //GO
 
@@ -51,12 +51,14 @@ public class InventoryDbContext : DbContext
 //CREATE TABLE[dbo].[Inventory]
 //(
 //    [Id][int] IDENTITY(1,1) NOT NULL,
+
 //    [ProductId] [nvarchar] (max) NOT NULL,
 //	  [QuantityAvailable] [int] NOT NULL,
+//    [WarehousId] [varchar] (20) NOT NULL,
+//    [LastUpdateAt] [datetime2] (7) NOT NULL,
 // CONSTRAINT[PK_Inventory] PRIMARY KEY CLUSTERED
 //(
 //    [Id] ASC
 //)WITH(PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON[PRIMARY]
 //) ON[PRIMARY] TEXTIMAGE_ON[PRIMARY]
 //GO
-
