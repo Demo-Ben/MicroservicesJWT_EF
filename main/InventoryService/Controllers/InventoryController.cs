@@ -63,6 +63,6 @@ public class InventoryController : ControllerBase
         _db.SaveChanges();
 
         // Simulate inventory update
-        return Ok(new { Status = "Inventory Updated" });
+        return Ok(new { Status = "Reserved" });
     }
 }
