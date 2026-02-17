@@ -10,6 +10,7 @@ using OrderService.Models;
 using SharedKernel.Models;
 using System.Net.Http.Json;
 using static System.Net.WebRequestMethods;
+using SharedKernel.DTOs
 
 namespace OrderService.Controllers;
 
@@ -77,18 +78,29 @@ public class OrderController : ControllerBase
         if (!paymentResponse.IsSuccessStatusCode)
             return BadRequest("Payment failed");
 
+        var paymentResult = await paymentResponse.Content.ReadFromJsonAsync<PaymentResultDto>();
 
-		// 2. Call InventoryService
-		//https://localhost:5003/api/Inventory/update
-		var inventoryUpdate = new InventoryUpdate { ProductId= order.ProductId, Quantity =order.Quantity };
+
+        // 2. Call InventoryService
+        //https://localhost:5003/api/Inventory/update
+        var inventoryUpdate = new InventoryUpdate { ProductId= order.ProductId, Quantity =order.Quantity };
 
         var _http2 = _httpClientFactory.CreateClient("InventoryService");
         //var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update",new { order.ProductId, order.Quantity });
         var inventoryResponse = await _http2.PostAsJsonAsync("api/inventory/update", inventoryUpdate);
 
         if (!inventoryResponse.IsSuccessStatusCode)
-            return BadRequest("Inventory update failed");
+            return BadRequest("Inventory reservation failed");
 
-        return Ok("Order processed successfully");
+        var inventoryResult = await inventoryResponse.Content.ReadFromJsonAsync<InventoryResultDto>();
+
+        //return Ok("Order processed successfully");
+        // 3. Return combined result
+        return Ok(new
+        {
+            OrderId = order.Id,
+            PaymentStatus = paymentResult.Status,
+            InventoryStatus = inventoryResult.Status
+        });
     }
 }
