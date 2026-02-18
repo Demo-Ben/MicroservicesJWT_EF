@@ -21,6 +21,15 @@ public class PaymentController : ControllerBase
     [HttpPost]
     public IActionResult ProcessPayment(Payment request)
     {
+        if (request.Amount <= 0)
+        {
+            return Ok(new {
+                    OrderID = request.OrderId,
+                    Success = false,
+                    Message = "Invalid amount"
+                });
+        }
+
         var payment = new Payment
         {
             TransactionId = Guid.NewGuid().ToString(), // ← generated here
