@@ -47,7 +47,7 @@ public class OrderController : ControllerBase
             TransactionId = Guid.NewGuid().ToString(), // Generate a unique transaction ID
             OrderId = order.Id, 
             Amount = order.Amount, 
-            Status= order.Status
+            Status= "Pending", //order.Status
         };
 
         //var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment", new { order.Id, order.Amount });
@@ -57,24 +57,21 @@ public class OrderController : ControllerBase
         if (!paymentResponse.IsSuccessStatusCode)
             return BadRequest("Payment failed");
 
+
         var paymentResult = await paymentResponse.Content.ReadFromJsonAsync<PaymentResultDto>();
         if (paymentResult.Status != "Success")
         {
-
-
             order.Status = "PaymentFailed";
             await _db.SaveChangesAsync();
             return BadRequest("Payment failed");
         }
-
-
 
         // 2. Call InventoryService
         //https://localhost:5003/api/Inventory/update
         var inventoryUpdate = new InventoryUpdate 
         {
             ProductId= order.ProductId, 
-            Quantity =order.Quantity 
+            Quantity = order.Quantity 
         };
 
         //var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update",new { order.ProductId, order.Quantity });
