@@ -87,7 +87,7 @@ public class PaymentController : ControllerBase
 
 
 
-    public object Payments { get; private set; }
+   // public object Payments { get; private set; }
 
     // ---------------------------------------
     // GET: api/payment

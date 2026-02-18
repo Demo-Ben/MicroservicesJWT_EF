@@ -62,7 +62,7 @@ public class InventoryController : ControllerBase
 
 
     [HttpPost("release")]
-    public IActionResult ReleaseInventory(ReleaseInventoryRequest request)
+    public IActionResult ReleaseInventory([FromBody] ReleaseInventoryRequest request)
     {
         var item = _db.Inventory.FirstOrDefault(x => x.ProductId == request.ProductId);
 
