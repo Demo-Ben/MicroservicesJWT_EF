@@ -22,7 +22,8 @@ public class InventoryController : ControllerBase
     [HttpPost("update")]
     public IActionResult UpdateInventory(InventoryUpdate update)
     {
-        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId);
+        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId 
+                                                && x.QuantityAvailable >= update.Quantity);
 
         // If item doesn't exist, treat as zero stock
         if (item == null)
@@ -51,7 +52,6 @@ public class InventoryController : ControllerBase
         _db.SaveChanges();
 
         // Simulate inventory update
-        //return Ok(new { Status = "Reserved" });
         return Ok(new
         {
             Status = "Reserved",
@@ -62,32 +62,32 @@ public class InventoryController : ControllerBase
 
 
 
-    //[HttpPost("release")]
-    //public IActionResult ReleaseInventory([FromBody] ReleaseInventoryRequest request)
-    //{
-    //    var item = _db.Inventory.FirstOrDefault(x => x.ProductId == request.ProductId);
+    [HttpPost("release")]
+    public IActionResult ReleaseInventory([FromBody] ReleaseInventoryRequest request)
+    {
+        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == request.ProductId);
 
-    //    // If item doesn't exist, nothing to release
-    //    if (item == null)
-    //    {
-    //        return Ok(new
-    //        {
-    //            Status = "Ignored",
-    //            Message = "No inventory record found. Nothing to release."
-    //        });
-    //    }
+        // If item doesn't exist, nothing to release
+        if (item == null)
+        {
+            return Ok(new
+            {
+                Status = "Ignored",
+                Message = "No inventory record found. Nothing to release."
+            });
+        }
 
-    //    // Add stock back
-    //    item.QuantityAvailable += request.Quantity;
-    //    _db.SaveChanges();
+        // Add stock back
+        item.QuantityAvailable += request.Quantity;
+        _db.SaveChanges();
 
-    //    return Ok(new
-    //    {
-    //        Status = "Released",
-    //        AvailableQuantity = item.QuantityAvailable,
-    //        Message = "Inventory released successfully"
-    //    });
-    //}
+        return Ok(new
+        {
+            Status = "Released",
+            AvailableQuantity = item.QuantityAvailable,
+            Message = "Inventory released successfully"
+        });
+    }
 
 
     // ---------------------------------------

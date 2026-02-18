@@ -21,6 +21,15 @@ public class PaymentController : ControllerBase
     [HttpPost]
     public IActionResult ProcessPayment(Payment request)
     {
+        if (request.Amount <= 0)
+        {
+            return Ok(new {
+                    OrderID = request.OrderId,
+                    Success = false,
+                    Message = "Invalid amount"
+                });
+        }
+
         var payment = new Payment
         {
             TransactionId = Guid.NewGuid().ToString(), // ← generated here
@@ -75,7 +84,6 @@ public class PaymentController : ControllerBase
         // 4. Perform refund logic (simulate)
         payment.Status = "Refunded";
         payment.RefundedAt = DateTime.UtcNow;
-
         await _db.SaveChangesAsync();
 
         // 5. Return result
@@ -86,9 +94,6 @@ public class PaymentController : ControllerBase
         });
     }
 
-
-
-    public object Payments { get; private set; }
 
     // ---------------------------------------
     // GET: api/payment
