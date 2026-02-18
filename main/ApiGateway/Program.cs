@@ -42,6 +42,7 @@ builder.Services.AddControllers();
 builder.Services.AddOcelot();
 
 
+// Part II
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {

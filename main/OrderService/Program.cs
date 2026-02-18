@@ -52,6 +52,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 
 
 
+// Part II
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,13 +64,14 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseCors(builder =>  //CORS must be placed after UseRouting() and before UseAuthentication().
-{
-    builder
-    .AllowAnyOrigin()
-    .AllowAnyMethod()
-    .AllowAnyHeader();
-});
+// CORS is not needed if API Gateway is used, as the client will call API Gateway, not OrderService directly.
+//app.UseCors(builder =>  //CORS must be placed after UseRouting() and before UseAuthentication().
+//{
+//    builder
+//    .AllowAnyOrigin()
+//    .AllowAnyMethod()
+//    .AllowAnyHeader();
+//});
 
 app.UseAuthentication(); 
 app.UseAuthorization();

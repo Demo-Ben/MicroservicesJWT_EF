@@ -14,6 +14,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAutoMapper(typeof(Program));
 
+
+// Part II
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
