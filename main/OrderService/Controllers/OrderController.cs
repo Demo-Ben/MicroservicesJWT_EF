@@ -51,8 +51,8 @@ public class OrderController : ControllerBase
         };
 
         //var paymentResponse = await _http.PostAsJsonAsync("http://localhost:5002/api/payment", new { order.Id, order.Amount });
-        var _http = _httpClientFactory.CreateClient("PaymentService");
-        var paymentResponse = await _http.PostAsJsonAsync("api/payment", paymentRequest);
+        var _paymentClient = _httpClientFactory.CreateClient("PaymentService");
+        var paymentResponse = await _paymentClient.PostAsJsonAsync("api/payment", paymentRequest);
 
         if (!paymentResponse.IsSuccessStatusCode)
             return BadRequest("Payment failed");
@@ -60,6 +60,8 @@ public class OrderController : ControllerBase
         var paymentResult = await paymentResponse.Content.ReadFromJsonAsync<PaymentResultDto>();
         if (paymentResult.Status != "Success")
         {
+
+
             order.Status = "PaymentFailed";
             await _db.SaveChangesAsync();
             return BadRequest("Payment failed");
@@ -76,8 +78,8 @@ public class OrderController : ControllerBase
         };
 
         //var inventoryResponse = await _http.PostAsJsonAsync("http://localhost:5003/api/inventory/update",new { order.ProductId, order.Quantity });
-        var _http2 = _httpClientFactory.CreateClient("InventoryService");
-        var inventoryResponse = await _http2.PostAsJsonAsync("api/inventory/update", inventoryUpdate);
+        var _inventoryClient = _httpClientFactory.CreateClient("InventoryService");
+        var inventoryResponse = await _inventoryClient.PostAsJsonAsync("api/inventory/update", inventoryUpdate);
 
         if (!inventoryResponse.IsSuccessStatusCode)
             return BadRequest("Inventory reservation failed");
@@ -86,13 +88,23 @@ public class OrderController : ControllerBase
         if (inventoryResult.Status != "Reserved")
         {
             // COMPENSATING ACTION
-            var refundRequestDto =new RefundRequestDto
+            // 1. Refund payment
+            var refundRequestDto = new RefundRequestDto
             {
                 TransactionId = paymentResult.TransactionId
             };
-            await _http.PostAsJsonAsync("api/payment/refund", refundRequestDto);
+            await _paymentClient.PostAsJsonAsync("api/payment/refund", refundRequestDto);
 
-            order.Status = "InventoryFailed";
+
+            // 2. Release inventory (if any was reserved earlier)
+            var releaseInventoryRequest = new ReleaseInventoryRequest
+            {
+                ProductId = order.ProductId,
+                Quantity = order.Quantity
+            };
+            await _inventoryClient.PostAsJsonAsync("api/inventory/release", releaseInventoryRequest);	
+
+			order.Status = "InventoryFailed";
             await _db.SaveChangesAsync();
             return BadRequest("Inventory reservation failed");
         }
