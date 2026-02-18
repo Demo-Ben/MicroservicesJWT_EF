@@ -11,6 +11,7 @@ namespace OrderService.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class OrderController : ControllerBase
 {
     //private readonly HttpClient _http;

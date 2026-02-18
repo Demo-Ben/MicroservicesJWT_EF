@@ -1,7 +1,7 @@
 {
   "Routes": [
     {
-      // downstream is case insensitive !
+      // ** downstream is case insensitive !
       "DownstreamPathTemplate": "/api/auth/{everything}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -10,7 +10,7 @@
           "Port": 5004
         }
       ],
-      // Upstream is case sensitive !
+      // ** Upstream is case sensitive !
       "UpstreamPathTemplate": "/auth/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET" ]
     },
@@ -24,11 +24,11 @@
         }
       ],
       "UpstreamPathTemplate": "/order/{everything}",
-      "UpstreamHttpMethod": [ "POST" ]
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer",
-      //  "AllowedScopes": []
-      //}
+      "UpstreamHttpMethod": [ "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/payment/{everything}",
