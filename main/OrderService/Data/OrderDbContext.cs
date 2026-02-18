@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-using OrderService.Models;
+using SharedKernel.Models;
 
 namespace OrderService.Data;
 

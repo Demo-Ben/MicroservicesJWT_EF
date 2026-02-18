@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using OrderService.DTOs;
-using OrderService.Models;
+using SharedKernel.DTOs;
+using SharedKernel.Models;
 
 public class OrderProfile : Profile
 {
