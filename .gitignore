@@ -365,3 +365,5 @@ FodyWeavers.xsd
 /main/AuthService/Migrations/AuthDbContextModelSnapshot.cs
 /main/AuthService/Migrations/20260216210128_InitialCreate.cs
 /main/AuthService/Migrations/20260216210128_InitialCreate.Designer.cs
+/main/InventoryService/Migrations/20260218083920_InitialCreate.cs
+/main/InventoryService/Migrations/20260218083920_InitialCreate.Designer.cs
