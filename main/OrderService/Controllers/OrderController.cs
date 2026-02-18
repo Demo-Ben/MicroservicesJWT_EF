@@ -134,10 +134,10 @@ public class OrderController : ControllerBase
 //});
 
 
-// -------------------------------
-// GET: api/order
-// -------------------------------
-[HttpGet]
+    // -------------------------------
+    // GET: api/order
+    // -------------------------------
+    [HttpGet]
     public async Task<IActionResult> GetAll()
     {
         var orders = await _db.Orders.ToListAsync();
