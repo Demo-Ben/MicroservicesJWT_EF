@@ -33,10 +33,10 @@ public class OrderDbContext : DbContext
 //CREATE TABLE[dbo].[Orders]
 //(
 //    [Id][int] IDENTITY(1,1) NOT NULL,
-//    [ProductId] [nvarchar] (max) NOT NULL,
+//    [ProductId] [int] NOT NULL,
 //	  [Quantity] [int] NOT NULL,
 //    [Amount] [decimal] (18, 2) NOT NULL,
-//    [Status] [nvarchar] (max) NOT NULL,
+//    [Status] [varchar](50) NOT NULL,
 //	  [CreatedAt][datetime2] (7) NOT NULL,
 // CONSTRAINT[PK_Orders] PRIMARY KEY CLUSTERED
 //(

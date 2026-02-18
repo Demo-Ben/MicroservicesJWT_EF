@@ -22,9 +22,10 @@ public class InventoryController : ControllerBase
     [HttpPost("update")]
     public IActionResult UpdateInventory(InventoryUpdate update)
     {
-        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId 
-                                                && x.QuantityAvailable >= update.Quantity);
+        var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId);
 
+        //var item = _db.Inventory.FirstOrDefault(x => x.ProductId == update.ProductId
+        //                                && x.QuantityAvailable >= update.Quantity);
         // If item doesn't exist, treat as zero stock
         if (item == null)
         {

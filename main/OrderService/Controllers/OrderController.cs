@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OrderService.Data;
-using OrderService.DTOs;
-using OrderService.Models;
 using SharedKernel.Models;
 using System.Net.Http.Json;
 using SharedKernel.DTOs;
@@ -94,12 +92,12 @@ public class OrderController : ControllerBase
 
 
             // 2. Release inventory (if any was reserved earlier)
-            var releaseInventoryRequest = new ReleaseInventoryRequest
-            {
-                ProductId = order.ProductId,
-                Quantity = order.Quantity
-            };
-            await _inventoryClient.PostAsJsonAsync("api/inventory/release", releaseInventoryRequest);	
+            //var releaseInventoryRequest = new ReleaseInventoryRequest
+            //{
+            //    ProductId = order.ProductId,
+            //    Quantity = order.Quantity
+            //};
+            //await _inventoryClient.PostAsJsonAsync("api/inventory/release", releaseInventoryRequest);	
 
 			order.Status = "InventoryFailed";
             await _db.SaveChangesAsync();
@@ -117,21 +115,6 @@ public class OrderController : ControllerBase
             InventoryStatus = inventoryResult.Status
         });
     }
-
-
-
-//    // 1. Refund payment
-//    await _paymentClient.PostAsJsonAsync("api/payment/refund", new 
-//{
-//    transactionId = paymentResult.TransactionId
-//});
-
-//// 2. Release inventory (if any was reserved earlier)
-//await _inventoryClient.PostAsJsonAsync("api/inventory/release", new 
-//{
-//    productId = order.ProductId,
-//    quantity = order.Quantity
-//});
 
 
     // -------------------------------
