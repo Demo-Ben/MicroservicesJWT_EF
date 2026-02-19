@@ -30,18 +30,36 @@ public class PaymentController : ControllerBase
                 });
         }
 
-        var payment = new Payment
+        try
         {
-            TransactionId = Guid.NewGuid().ToString(), // ← generated here
-            OrderId = request.OrderId, 
-            Amount = request.Amount, 
-            Status = "Success" 
-        }; 
-        _db.Payments.Add(payment); 
-        _db.SaveChanges();
+            var payment = new Payment
+            {
+                TransactionId = Guid.NewGuid().ToString(), // ← generated here
+                OrderId = request.OrderId,
+                Amount = request.Amount,
+                Status = "Success"
+            };
+            _db.Payments.Add(payment);
+            _db.SaveChanges();
 
-        // Simulate payment success
-        return Ok(new { Status = "Success", transactionId = payment.TransactionId });
+            // Simulate payment success
+            return Ok(new
+            { 
+                Status = "Success", 
+                transactionId = payment.TransactionId 
+            });
+        }
+        catch (Exception)
+        {
+            return Ok(new
+            {
+                OrderID = request.OrderId,
+                Success = false,
+                Message = "Payment failed."
+            });
+        }
+    
+        
     }
 
 

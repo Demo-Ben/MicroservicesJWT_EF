@@ -53,10 +53,16 @@ public class OrderController : ControllerBase
         var _paymentClient = _httpClientFactory.CreateClient("PaymentService");
         var paymentResponse = await _paymentClient.PostAsJsonAsync("api/payment", paymentRequest);
 
+
+        // 1.1 If payment failure
         if (!paymentResponse.IsSuccessStatusCode)
+        {
+            order.Status = "Payment failed";
+            await _db.SaveChangesAsync();
             return BadRequest("Payment failed");
+        }
 
-
+        // 1.2 If payment success, read the result
         var paymentResult = await paymentResponse.Content.ReadFromJsonAsync<PaymentResultDto>();
         if (paymentResult.Status != "Success")
         {
@@ -77,10 +83,14 @@ public class OrderController : ControllerBase
         var _inventoryClient = _httpClientFactory.CreateClient("InventoryService");
         var inventoryResponse = await _inventoryClient.PostAsJsonAsync("api/inventory/update", inventoryUpdate);
 
+        // 2.1 If iinventoryResponse return non-success status code (e.g. 500, 503)
+        //    such as service down, network issue, etc. We treat it as inventory reservation failure
         if (!inventoryResponse.IsSuccessStatusCode)
             return BadRequest("Inventory reservation failed");
 
         var inventoryResult = await inventoryResponse.Content.ReadFromJsonAsync<InventoryResultDto>();
+
+        // 2.2 If inventory is success, but not Inventory reservation
         if (inventoryResult.Status != "Reserved")
         {
             // COMPENSATING ACTION
@@ -105,10 +115,11 @@ public class OrderController : ControllerBase
             return BadRequest("Inventory reservation failed");
         }
 
+        // 3. complete order
         order.Status = "Completed";
         await _db.SaveChangesAsync();
 
-        // 3. Return combined result
+        // 4. Return combined result
         return Ok(new
         {
             OrderId = order.Id,
