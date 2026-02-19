@@ -1,4 +1,5 @@
-﻿using InventoryService.Data;
+﻿using Azure.Core;
+using InventoryService.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SharedKernel.DTOs;
@@ -42,25 +43,36 @@ public class InventoryController : ControllerBase
         {
             return Ok(new
             {
-                Status = "OutOfStock",
+                Status = "ShortOfQuanity",
                 AvailableQuantity = item.QuantityAvailable,
                 Message = "Not enough inventory available"
             });
         }
 
-        // Deduct stock
-        item.QuantityAvailable -= update.Quantity; 
-        _db.SaveChanges();
-
-        // Simulate inventory update
-        return Ok(new
+        try
         {
-            Status = "Reserved",
-            AvailableQuantity = item.QuantityAvailable,
-            Message = "Inventory reserved successfully"
-        });
-    }
+            // Deduct stock
+            item.QuantityAvailable -= update.Quantity;
+            _db.SaveChanges();
 
+            // Simulate inventory update
+            return Ok(new
+            {
+                Status = "Reserved",
+                AvailableQuantity = item.QuantityAvailable,
+                Message = "Inventory reserved successfully"
+            });
+        }
+        catch (Exception)
+        {
+            return Ok(new
+            {
+                Status = "Unreserved",
+                AvailableQuantity = item.QuantityAvailable,
+                Message = "Inventory reserved unsuccessfully"
+            });
+        }
+    }
 
 
     [HttpPost("release")]
